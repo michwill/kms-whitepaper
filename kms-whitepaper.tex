@@ -1,4 +1,6 @@
 \documentclass[longbibliography,nofootinbib]{revtex4-1}
+\usepackage[utf8]{inputenc}
+\usepackage{CJKutf8}
 
 \newcommand{\kms}{NuCypher KMS}
 
@@ -13,20 +15,21 @@
 \definecolor{darkgreen}{rgb}{0.00,0.50,0.25}
 \definecolor{darkblue}{rgb}{0.00,0.00,0.67}
 \newcommand{\figref}[1]{Fig.~\ref{#1}}
-\usepackage[breaklinks,pdftitle={NuCypher KMS: decentralized key management system}, pdfauthor={Michael Egorov},colorlinks,urlcolor=blue,citecolor=darkgreen,linkcolor=darkblue]{hyperref}
+\usepackage[breaklinks,pdftitle={NuCypher KMS: decentralized key management system (Chinese translation)}, pdfauthor={Michael Egorov},colorlinks,urlcolor=blue,citecolor=darkgreen,linkcolor=darkblue]{hyperref}
 \graphicspath{{pdf/}}
 
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\lstset{
-    basicstyle=\ttfamily,
-    basewidth={0.5em, 0.5em},
-    columns=fullflexible,
-}
+% \usepackage[T1]{fontenc}
+% \usepackage{lmodern}
+% \lstset{
+%     basicstyle=\ttfamily,
+%     basewidth={0.5em, 0.5em},
+%     columns=fullflexible,
+% }
 
 \begin{document}
+\begin{CJK*}{UTF8}{gbsn}
 
-\title{\kms: Decentralized key management system}
+\title{\kms: 分布式密钥管理系统}
 
 \author{Michael Egorov}
 \email{michael@nucypher.com}
@@ -52,6 +55,7 @@
 
 \date{\today}
 \maketitle
+\end{CJK*}
 
 \tableofcontents
 
