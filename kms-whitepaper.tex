@@ -84,21 +84,21 @@ KMS包含在设备上生成，分发和流转密钥的后台功能以及注入�
 由于使用代理重新加密，未加密的对称密钥（能够解密私有数据）绝不会暴露在服务器端（\figref{fig:kms}），并且没有单点安全失败。
 即使被攻破，黑客也只能得到重新加密的密钥，并且对文件的访问仍然受到保护。
 
-\section{Architecture}
+\section{架构}
 
-\subsection{Cryptographic primitives}
+\subsection{加密原语}
 
-\subsubsection{Symmetric encryption}
+\subsubsection{对称加密}
 
-Symmetric or secret key encryption requires users to know a common secret key.
-For convenience, we refer to this common secret key as DEK (data encryption key).
+对称或私钥加密要求用户知道一个共公秘密密钥。
+为了方便起见，我们将这个公共密钥称为DEK（数据加密密钥）。
 
-Two operations are defined for symmetric ciphers:
+对称加密定义了两个操作：
 \begin{align}
     c &= \text{encrypt}_{sym}(dek, d);\\
     d &= \text{decrypt}_{sym}(dek, c);
 \end{align}
-where $d$ is plaintext data, and $c$ is ciphertext (encrypted data).
+$d$是明文，$c$是密文（加密数据）。
 
 The most useful symmetric key encryption algorithms for our purposes are AES (because it's normally hardware-accelerated)~\cite{wiki:aes}
 and Salsa20~\cite{wiki:salsa20}.
