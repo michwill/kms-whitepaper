@@ -58,10 +58,8 @@
 内生代币用来激励网络参与者执行密钥管理和权限代理/回收的操作。
 
 \subsection{背景}
-A key management system (KMS) is an integrated approach for generating, distributing, and managing cryptographic keys for devices and
-applications~(\figref{fig:kms}).
-A KMS includes the backend functionality for key generation, distribution, and rotation as well as the client functionality for
-injecting, storing, and managing keys on devices~\cite{wiki:kms}.
+权限管理系统(KMS)是在设备和应用程序中生成，分发和管理密钥的集成方案（\figref{fig:kms}）。
+KMS包含在设备上生成，分发和流转密钥的后台功能以及注入，存储和管理密钥的客户端功能\cite{wiki:kms}。
 
 \begin{figure}
     \centering
@@ -73,28 +71,18 @@ injecting, storing, and managing keys on devices~\cite{wiki:kms}.
     \label{fig:kms}
 \end{figure}
 
+作为信任的根源，适当配置，管理和保护KMS很关键。
+传统上，这意味着把KMS预置到硬件安全模块(HSM)\cite{wiki:hsm} 或者使用诸如HashiCorp’s Vault\cite{web:hashicorp-vault}这样的工具。
+然而这需要很高等级的技术复杂性和前期资本投资，为了降低技术负担和提供有竞争力的价格，像亚马逊云HSM\cite{web:aws-cloudhsm}，
+谷歌云KMS\cite{web:google-cloud-kms}，微软Azure Key Vault\cite{web:azure-key-vault}和TrueVault\cite{web:truevault} 开始提供KMS服务。
+然而，KMS作为服务产品需要在服务提供商中设置不适当的信任级别，这对于安全至关重要的应用程序来说可能不合适。
 
-As the root of trust, it's critical that a KMS is appropriately configured, managed, and protected.
-Historically, this has meant deploying a KMS on-premises in hardware security modules (HSM)~\cite{wiki:hsm} or using tools like
-HashiCorp's Vault~\cite{web:hashicorp-vault}.
-However, this requires a high degree of technical sophistication as well as upfront capital investment.
-To ease the technical burden and provide more competitive pricing, vendors like Amazon CloudHSM~\cite{web:aws-cloudhsm},
-Google Cloud KMS~\cite{web:google-cloud-kms}, Azure Key Vault~\cite{web:azure-key-vault} and TrueVault~\cite{web:truevault}
-have begun offering KMS as a service.
-However, KMS as a service offerings necessitate placing an undue level of trust in the service provider, which may
-be inappropriate for security-critical applications.
+公众共识网络比如比特币和以太坊，在解决这种中心化的难题方面很有前途。但是，在公众共识网络上执行涉及私密数据操作的局限性是确定的\cite{cryptoeprint:2017:201}。
+共识网络采用一个志愿者节点网络，在可用性和强制访问管理规则方面，这种网络经常发生中断，而不像中央基础设施那样可靠。
 
-Public consensus networks, such as Bitcoin and Ethereum, are a promising solution to this centralization problem.
-But the limitations of public consensus networks in performing cryptographic operations that involve the manipulation of secret
-data are well-established~\cite{cryptoeprint:2017:201}. Consensus networks employ a volunteer network of nodes,
-which is subject to constant churn and not as reliable as central infrastructure when it comes to availability and
-enforcing access management rules.
-
-\kms~ uses a decentralized network to remove the reliance on central service providers, proxy re-encryption for cryptographic
-access control, and a token incentive mechanism to ensure reliability, availability, and correctness.
-Because of the use of proxy re-encryption, an unencrypted symmetric key (which gives the ability to decrypt private data) is never exposed
-server-side~(\figref{fig:kms}), and there is no single point of security failure.
-Even if compromised, hackers would only get re-encryption keys but access to the file is still protected.
+\kms使用分布式网络移除对中心化服务提供商的信任，使用代理重加密提供密码访问控制，使用代币激励机制保证可靠性，可用性和正确性。
+由于使用代理重新加密，未加密的对称密钥（能够解密私有数据）绝不会暴露在服务器端（\figref{fig:kms}），并且没有单点安全失败。
+即使被攻破，黑客也只能得到重新加密的密钥，并且对文件的访问仍然受到保护。
 
 \section{Architecture}
 
