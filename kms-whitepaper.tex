@@ -21,6 +21,7 @@
 \begin{document}
 \begin{CJK*}{UTF8}{gbsn}
 \renewcommand{\tocname}{内容}
+\renewcommand{\figurename}{图}
 
 \title{\kms: 分布式密钥管理系统}
 
@@ -50,14 +51,13 @@
 
 \newpage
 
-\section{Introduction}
+\section{摘要}
 
-\kms~is a decentralized key management system (KMS), encryption, and access control service.
-It enables private data sharing between arbitrary numbers of participants in public consensus networks,
-using proxy re-encryption to delegate decryption rights in a way that cannot be achieved by traditional symmetric or public-key encryption schemes.
-Native tokens are used to incentivize network participants to perform key management and access delegation/revocation operations.
+\kms~是一个分布式密钥管理系统(KMS)，提供加密和权限控制服务。
+它能够在公共网络上在任意数量的参与者之间共享私有数据，使用代理重加密技术来代理解密权限，这是传统对称加密和公钥加密方案不能实现的。
+内生代币用来激励网络参与者执行密钥管理和权限代理/回收的操作。
 
-\subsection{Background}
+\subsection{背景}
 A key management system (KMS) is an integrated approach for generating, distributing, and managing cryptographic keys for devices and
 applications~(\figref{fig:kms}).
 A KMS includes the backend functionality for key generation, distribution, and rotation as well as the client functionality for
@@ -65,11 +65,11 @@ injecting, storing, and managing keys on devices~\cite{wiki:kms}.
 
 \begin{figure}
     \centering
-    \subfloat[Centralized KMS]{\includegraphics[width=0.4\columnwidth]{pdf/centralized-kms.pdf}}
+    \subfloat[中心化KMS]{\includegraphics[width=0.4\columnwidth]{pdf/centralized-kms.pdf}}
     \qquad
     \qquad
-    \subfloat[PRE-based KMS]{\includegraphics[width=0.4\columnwidth]{pdf/pre-kms.pdf}}
-    \caption{Difference between a centralized key management system (KMS) and the one which uses proxy re-encryption (PRE)}
+    \subfloat[代理重加密KMS]{\includegraphics[width=0.4\columnwidth]{pdf/pre-kms.pdf}}
+    \caption{中心化密钥管理系统（KMS）和代理重加密（PRE）密钥管理系统的区别}
     \label{fig:kms}
 \end{figure}
 
