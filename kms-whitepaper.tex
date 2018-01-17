@@ -100,30 +100,27 @@ KMS包含在设备上生成，分发和流转密钥的后台功能以及注入�
 \end{align}
 $d$是明文，$c$是密文（加密数据）。
 
-The most useful symmetric key encryption algorithms for our purposes are AES (because it's normally hardware-accelerated)~\cite{wiki:aes}
-and Salsa20~\cite{wiki:salsa20}.
+对于我们来说，最有用的对称密钥加密算法是AES（因为它通常是硬件加速的）\cite{wiki:aes}和Salsa20 \cite{wiki:salsa20}。
 
-Symmetric block ciphers can operate in different modes.
-We use modes of operation that yield probabilistic encryption (such as GCM for AES), to guarantee strong semantic security.
-For simplicity, we omit details about the particular modes of operations, treating the value of \emph{nonce} related to the mode of operation as part of the
-ciphertext $c$.
+对称分组密码可以在不同的模式下运行。
+我们使用概率加密的操作模式（如用于AES的GCM）来保证强大的语义安全性。
+为了简单起见，我们省略了关于特定操作模式的细节，将与操作模式有关的随机数值视为密文的一部分$c$。
 
-\subsubsection{Public-key encryption}
+\subsubsection{公钥加密}
 
-Public-key encryption (PKE) is a type of encryption where two parties (a sender and a receiver) exchange information without any required common secret.
-Every participant has a key pair (a public key $pk$ and a secret/private key $sk$).
-If the sender has a key pair $sk_s/pk_s$ and the receiver has a key pair $sk_r/pk_r$, the sender can encrypt a message with the receiver's public key,
-and the receiver can decrypt with his secret key.
+公钥加密（PKE）是双方（发送方和接收方）交换信息而不需要任何公钥的一种加密方式。
+每个参与者都有一个密钥对（一个公钥$pk$和一个密钥/私钥$sk$）。
+如果发送者有一个密钥对$sk_s/pk_s$，并且接收者有一个密钥对$sk_r/pk_r$，发送者可以使用接收者的公钥对消息进行加密，接收者可以用他的密钥进行解密。
 
-Hybrid cryptosystems can be created that combine the efficiency of symmetric encryption with the convenience of PKE.
-A hybrid cryptosytem encryption flow defines the functions:
+可以创建混合密码系统，将对称加密的效率与PKE的便利性相结合。
+混合密码体制加密流程定义了以下功能：
 \begin{align}
     dek &= \text{random}();\\
     c &= \text{encrypt}_{sym}(dek, d);\\
     edek &= \text{encrypt}_{pke}(dek, pk_r).
 \end{align}
-The pair $(edek, c)$ is used to transform the encrypted data.
-The associated decryption by the receiver defines the functions:
+该对$(edek,c)$用于转换加密的数据。
+接收器的相关解密定义了以下功能：
 \begin{align}
     dek &= \text{decrypt}_{pke}(edek, sk_r);\\
     d &= \text{decrypt}_{sym}(dek, c).
