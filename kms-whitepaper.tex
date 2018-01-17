@@ -126,9 +126,8 @@ $d$是明文，$c$是密文（加密数据）。
     d &= \text{decrypt}_{sym}(dek, c).
 \end{align}
 
-\subsubsection{Proxy re-encryption}
-Proxy re-encryption (PRE)~\cite{wiki:pre,nunez2017proxy} is a type of public-key encryption (PKE) that allows a proxy entity to transform ciphertexts
-from one public key to another, without learning anything about the underlying message~(\figref{fig:pre}).
+\subsubsection{代理重加密}
+代理重新加密（PRE）\cite{wiki:pre,nunez2017proxy}是一种公钥加密（PKE），它允许代理实体将密文从一个公钥转换到另一个公钥，而不需要知道任何关于底层消息的信息（\figref{fig:pre}）。
 
 \begin{figure}
 \centering
@@ -137,40 +136,37 @@ from one public key to another, without learning anything about the underlying m
     \label{fig:pre}
 \end{figure}
 
-In a typical proxy re-encryption scenario, there are several actors.
-Alice, the data owner, has public key $pk_A$. Any entity that knows this key can produce encrypted data that only she can decrypt, using her secret key $sk_A$.
-Suppose that a data producer encrypts a message $m$, with Alice's public key $pk_A$,
-resulting in ciphertext $c_A$.
-Alice decides to delegate access to message $m$ to Bob, who has the key pair $(pk_B, sk_B)$.
-To do so, Alice creates a re-encryption key:
+在典型的代理重新加密的情况下，有几个角色。
+数据拥有者Alice拥有公钥$pk_A$。
+知道这个密钥的任何实体都可以使用她的密钥$sk_A$产生只有她可以解密的加密数据。
+假设数据生产者用Alice的公钥$pk_A$加密消息$m$，得到密文$c_A$.
+Alice决定把对m消息的访问权委托给拥有密钥对$(pk_B, sk_B)$的Bob。
+为此，Alice创建一个重密密钥：
 \begin{equation}
     rk_{A\rightarrow B} = \text{rekey}(sk_A, pk_B).
 \end{equation}
-Importantly, in single-use, uni-directional proxy re-encryption schemes, this re-encryption function is one way, and $rk_{A\rightarrow B}$ cannot be decomposed into its component parts
-(at least, without also knowing $sk_A$ or $sk_B$).
-All it can do is re-encrypt $c_A$ such that it is transformed into $c_B$:
+重要的是，在单次使用的单向代理重新加密方案中，这种重新加密功能是一种方式，并且$rk_{A\rightarrow B}$不能被分解成其组成部分（至少在不知道$sk_A$或$sk_B$的情况下）。
+它所能做的就是对$c_A$进行重新加密，以便将其转换为$c_B$：
 \begin{equation}
     c_B = \text{reencrypt}(rk_{A\rightarrow B}, c_{A}).
 \end{equation}
-Bob can then decrypt $c_{B}$ using his secret key $sk_{B}$.
+Bob然后可以用他的秘密密钥$sk_B$解密$c_B$。
 
-Compared to existing PKE protocols which are ideal for 1-to-1 communication, PRE is more scalable for N-to-N communication
-with arbitrary numbers of data producers and consumers.
-It doesn't require knowing the recipient of a message in advance, as the re-encryption token can be created and applied at any point.
-This makes it well-suited for distributed systems such as blockchain, IoT, and big data~\cite{web:nucypher-hadoop}.
+现有的PKE协议是1对1通信的理想选择，与现有的PKE协议相比，代理重加密在任意数量的数据生产者和消费者的N对N通信时，更具可扩展性。
+它不需要事先知道消息的接收者，因为重新加密令牌可以在任何时候被创建和应用。
+这使得它非常适合分布式系统，如区块链，物联网和大数据~\cite{web:nucypher-hadoop}。
 
-There are many proxy re-encryption algorithms with different properties.
-For the first version of \kms~we choose ECIES for which we created a proxy re-encryption algorithm~\cite{umbral-spec}.
-It is very similar to the most simple (and performant) algorithm,~--- BBS98~\cite{BBS98}, but provides better security guarantees.
-However, sometimes we want to delegate re-encryption to multiple nodes, in order to split the trust between them and apply time-based or conditional
-re-encryption policies.
-In this case we use the AFGH scheme~\cite{AFGH}.
-Quantum-resistant NTRU may also be used if the need arises~\cite{wiki:ntru,ntrureencrypt}.
+有许多具有不同属性的代理重加密算法。
+对于\kms的第一个版本，我们选择了ECIES，我们为其创建了代理重加密算法\cite{umbral-spec}。
+它与最简单的（和高性能的）算法BBS98~\cite{BBS98}非常相似，但提供了更好的安全保证。
+然而，有时我们想要将重加密委托给多个节点，以便拆分它们之间的信任并应用基于时间的或有条件的重新加密策略。
+在这种情况下，我们使用AFGH方案\cite{AFGH}。
+抗量子的NTRU也可以在需要时使用\cite{wiki:ntru,ntrureencrypt}。
 
-Just like BBS98, our proxy re-encryption for ECIES creates a re-encryption key out of two secret keys, rather than a secret+public key.
-However, we don't want the sender to know the receiver's secret key.
-To get around this problem, we randomly generate an ephemeral key pair $sk_e/pk_e$.
-Then, access delegation looks like:
+就像BBS98一样，我们对ECIES的代理重加密算法是创建一个重加密密钥，而不是一个秘密+公共密钥。
+但是，我们不希望发送者知道接收者的密钥。
+为了解决这个问题，我们随机生成一个临时密钥对$sk_e/pk_e$。
+然后，访问委派看起来像这样：
 \begin{align}
     \label{eq:ephemeral-trick}
     sk_e &= \text{random}();\\
@@ -180,25 +176,24 @@ Then, access delegation looks like:
     rk_{A\rightarrow B} &= (rk_{A\rightarrow e}, sk_e^{\prime});
 \end{align}
 
-The re-encryption node uses $rk_{A\rightarrow e}$ to re-encrypt any ciphertext $c_A$ (whose underlying message is $m$) so it can be decrypted by $sk_e$. Since the receiver needs $sk_e^{\prime}$ to decrypt the re-encrypted ciphertext, this is attached to the re-encryption result. Therefore, the re-encryption process is as follows:
-
+重新加密节点使用$rk_{A\rightarrow e}$重新加密任何密文$c_A$（其基础消息为$m$），以便可以通过$sk_e$解密。
+由于接收方需要使用$sk_e^{\prime}$对重新加密的密文进行解密，因此将其附加到重新加密的结果上。
+因此，重新加密的过程如下：
 \begin{align}
     c_e = \text{reencrypt}(rk_{A\rightarrow e}, c_{A});\\
     c_B = (c_e, sk_e^{\prime});\\
 \end{align}
 
-%The re-encryption node also needs to tell the receiver his ephemeral key.
-%So, in addition to $rk_{A\rightarrow e}$, the receiver will get $sk_e^{\prime}$, which will be stored by a re-encryption node along with the re-encryption key.
-
-The decryption by the receiver will then look like:
+接收方的解密将如下所示：
 \begin{align}
     sk_e &= \text{decrypt}_{pke}(sk_B, sk_e^{\prime});\\
     m &= \text{decrypt}_{pke}(sk_e, c_e);\\
 %    d &= \text{decrypt}_{sym}(dek, c).
 \end{align}
 
-This approach was mentioned beforehand by Ateniese et al.~\cite{AFGH}, and also beyond proxy re-encryption work.
-The scheme is not considered to be ``key-optimal'', however, in our case, has a very competitive performance.
+Ateniese等人\cite{AFGH}事先提到了这种方法。
+这也超出了代理重新加密的范围。
+该方案不被认为是“关键优化”的，但在我们的用例中，却有一个非常有竞争力的性能。
 
 \subsection{A brief review of re-encryption schemes}
 
