@@ -330,11 +330,9 @@ Ateniese等人\cite{AFGH}事先提到了这种方法。
     分布式DRM（Sec.~\ref{sec:drm}）假定一旦内容（一个文件或一段视频）被解密，就已经被购买，所以权限回收不是真正的问题。但是，如果一个节点知道内容非常昂贵，他们可能试图接近买方，并就内容提出更便宜的价格，从而切断原卖方。 为了防止这种情况，我们应该匿名数据的接收者。这需要使用zk-SNARKs~\cite{consensys-snarks}，对挖矿结点隐藏确切的价格信息但又能使挖矿结点验证相关交易。
 
 % Access control for shared files
-When \kms~is used to secure access to files~(Sec.~\ref{sec:files}) or messages, both granting and revocation of access are important.
-So full anonymization is highly desirable.
-Possible attacks include recipients of the data bribing miners to continue having access after it should have been revoked and
-miners extorting fees from the owner when it is critical to revoke access.
-Anonymization appears to be an important part of making such attacks infeasible.
+
+    当\kms~用于保护对文件（章节~\ref{sec:files}）或消息的访问时，授予和撤销访问都是很重要的。 所以完全匿名是非常需要的。可能发生的攻击包括收受贿赂矿工的数据的接收者在权限被回收后能够继续访问数据，矿工在回收权限的关键时刻向数据接收者勒索费用。匿名化在防止这些攻击中重扮演重要角色。
+
 
 \subsection{硬件强制的安全性}
 
@@ -466,7 +464,7 @@ print(data)
 \begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth]{pdf/miners-ruler.pdf}
-    \caption{根据PoS选择随机节点。 每个节点$d_i$的权重被表示为线段。 这些线段连接在一起，形成一根长度为$D$的较大线段。随机选择随机节点}
+    \caption{根据PoS选择随机节点。 每个节点$d_i$的权重被表示为线段。 这些线段连接在一起，形成一根长度为$D$的较大线段。随机节点由从x = 0到x = D分布的随机点中选择}
     \label{fig:random-nodes}
 \end{figure}
 \begin{equation}
@@ -593,12 +591,12 @@ print(data)
 
 	为了使传统企业（金融，医疗，政府或物联网公司）受益，\kms~可以被私有部署。 它可以部署成私有，联盟（矿工由企业联盟控制的预先选定的节点替代），甚至中心化（一个组织控制所有重加密的密钥）区块链。这些使用仍然可以享受代理重加密的安全优势，但是抗审查能力不同。
 
-\section{概要}
+\section{要}
 	
     \kms~是分布式密钥管理服务和密码访问控制层，用于区块链和分布式应用程序。开发人员和企业都可以利用它来创建高度安全的应用程序比如医疗保健，金融服务等等。通过将私人数据共享和计算带入公有链，\kms~可以实现从加密内容市场到秘密凭证管理到病人控制的电子健康记录。
 
 
-\section{概观}
+\section{观}
 
 	我们要感谢来着斯蒂文斯理工学院的Giuseppe Ateniese和马拉加大学的Isaac Agudo Ruiz对代理重加密算法的帮助。我们也感谢弗吉尼亚大学的戴夫·埃文斯（Dave Evans）为我们公司在整个生命周期中提供咨询服务，并感谢他在多方计算方面的最新进展。 还有Stefano Bernardi，Tom Ding和其他许多人在代币记经济学的帮助。
     
